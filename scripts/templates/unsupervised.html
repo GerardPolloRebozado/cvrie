@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Symptom Cluster Predictor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+
+<body>
+    <main class="container">
+        <h2>Symptom Cluster Predictor</h2>
+        <textarea id="text" placeholder="Describe your symptom..."></textarea>
+        <button onclick="predict()">Predict Cluster</button>
+        <article id="resultBox" style="display:none; margin-top:20px;">
+            <h3 id="cluster"></h3>
+            <p><strong>Common symptoms:</strong></p>
+            <p id="keywords"></p>
+        </article>
+    </main>
+
+    <script>
+        async function predict() {
+            const text = document.getElementById("text").value;
+            const response = await fetch("http://127.0.0.1:8000/predict-unsupervised", 
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({testimony:text})
+            });
+            const data = await response.json();
+            document.getElementById("resultBox").style.display = "block";
+            document.getElementById("cluster").innerText = "Cluster " + data.cluster;
+            document.getElementById("keywords").innerText = data.keywords.join(", ");
+        }
+    </script>
+</body>
+</html>

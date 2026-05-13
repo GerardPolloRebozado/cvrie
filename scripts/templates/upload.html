@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MRI Tumor Predictor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@hiseb/confetti@2.1.0/dist/confetti.min.js"></script>
+</head>
+
+<body>
+<main class="container">
+    <h2>MRI Tumor Predictor</h2>
+
+    {% if result %}
+    <article id="resultBox" style="margin-bottom:1rem;">
+        <script>
+            confetti();
+        </script>
+        {% if result == "Tumor" %}
+        <p><strong>Congratulation you no longer have to work for the rest of you life, you are gonna die soon</strong>
+        </p>
+        {% endif %}
+        {% if result == "Healthy" %}
+        <p><strong>Congratulation you are gonna die but not due to cancer</strong></p>
+        {% endif %}
+    </article>
+    {% endif %}
+
+    <form action="/predict-image" enctype="multipart/form-data" method="post">
+        <label for="file">Select MRI image</label>
+        <input name="file" id="file" type="file" accept="image/*" required>
+        <button type="submit">Upload and Predict</button>
+    </form>
+
+    <footer style="margin-top:2rem;">
+        <small>Model: SVM (exports expected in <code>./models</code>)</small>
+    </footer>
+</main>
+
+</body>
+</html>
+
